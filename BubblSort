@@ -1,0 +1,71 @@
+!Cassidy 
+!Program: BubbleSort
+!%r1    contains the length of array
+!%r2    starting address of array ArrayInteger
+!%r3    contains indicator (used by outer loop to determine if the prog. should stop(when no swap in iteration)
+!r%4    Pointer into array ArrayInteger
+!%r5    Holds a near top element (in the inner loop, each iteration will compare 2 elements. The elements to be
+!compared and exchanged are tracked by two pointers: %r5 and %r6. %r5 is always above %r6.
+!%r6    Holds a near bottom element
+
+		.begin
+		.org 2048
+a_start	.equ 4000
+
+main:	addcc %r0, 5, %r3        	!load the point, to not equal zero
+  
+		ld [address], %r2        	  !the first element in the array, 8
+		ld [length], %r1        	  !the total length of the array is 24
+		ld [length], %r8			      !second length check
+		ld [address], %r9			      !second address for iteration
+
+
+outter:	andcc %r3, %r3, %r0			!check to make sure %r3 is not equal to 0
+            	be done       	  !halt, when %r3 is zero
+
+		and %r1, %r1, %r0			      !when length is 0, no more elements to compare, run next
+		be next
+
+		addcc %r10, 4, %r10
+
+		addcc %r0, %r0, %r7			    !clear %r7 for next iteration
+
+		addcc %r1, -4, %r1			    !decrement array length
+    ld [%r2], %r5		            !load the first number into %r5 (the "smallest number")
+
+		addcc %r9, %r10, %r4		    !Address of the next element
+   	ld %r4, %r6					        !load number into %r6
+
+    subcc %r6, %r5, %r7		      !subtract to see if %r5 is larger than %r6
+    
+		bpos outter
+		bneg inner          		    !run inner loop if comparison equals negative (the swap loop)
+		
+
+inner:	st %r6, %r2				      !the swap
+			  st %r5, %r4				      !the swap continued
+			  !addcc %r9, 4, %r9
+
+		ba outter
+
+next:	addcc %r2, 4, %r2		      !next element for comparison
+			addcc %r3, -1, %r3		    !%r3 control: decrement the number of swaps needed
+			addcc %r8, 4, %r8
+			ld %r8, %r2
+			addcc %r0, %r0, %r10
+			ba outter
+     
+done:		halt
+
+address:        a_start
+                .org a_start
+ArrayInteger: 	8   				    !length/4 values follow
+				        3
+				        4
+            	  9
+            	  1
+            	  7
+length:    		  24    				  !6 numbers (24 bytes) in ArrayInterger
+
+        .end
+

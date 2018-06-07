@@ -60,12 +60,12 @@ done:		halt
 address:        a_start
                 .org a_start
 ArrayInteger: 	8   				    !length/4 values follow
-				        3
-				        4
-            	  9
-            	  1
-            	  7
-length:    		  24    				  !6 numbers (24 bytes) in ArrayInterger
+		3
+		4
+            	9
+            	1
+            	7
+length:    	24    				  !6 numbers (24 bytes) in ArrayInterger
 
         .end
 
